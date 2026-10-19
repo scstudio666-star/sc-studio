@@ -924,13 +924,15 @@
    // 貼上剛才在 Discord 複製的 Webhook 網址
 const DISCORD_WEBHOOK_URL = '貼上你剛剛複製的Discord_Webhook完整網址';
 
+const DISCORD_WEBHOOK_URL = '貼上你剛剛複製的Discord_Webhook完整網址';
+
 window.handleOrderSubmit = function(e) {
   e.preventDefault();
-
+  
   const randomNum = Math.floor(1000 + Math.random() * 9000);
   const orderId = 'SC-' + randomNum;
   const finalPayable = Math.max(0, currentBasePrice - appliedDiscount);
-
+  
   const userEmail = document.getElementById('order-email').value.trim();
   const bankTail = document.getElementById('order-bank-tail').value.trim() || '未填寫（稍後提供）';
   const prodName = document.getElementById('modal-product-name').innerText;
@@ -942,7 +944,7 @@ window.handleOrderSubmit = function(e) {
   document.getElementById('final-payable-amount').innerText = 'NT$ ' + finalPayable;
   document.getElementById('order-success').style.display = 'block';
 
-  // 2. 自動將訂單資料推播到 Discord 的 #訂單單號專區
+  // 2. 自動將訂單推播至 Discord
   if (DISCORD_WEBHOOK_URL && !DISCORD_WEBHOOK_URL.includes('貼上你剛剛複製')) {
     const discordPayload = {
       username: "SC Order",
@@ -963,6 +965,14 @@ window.handleOrderSubmit = function(e) {
         }
       ]
     };
+
+    fetch(DISCORD_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(discordPayload)
+    }).catch(err => console.error("Webhook 發送失敗:", err));
+  }
+};
 
     fetch(DISCORD_WEBHOOK_URL, {
       method: 'POST',
