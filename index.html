@@ -921,49 +921,52 @@
       }
     };
 
-   // 貼上剛才在 Discord 複製的 Webhook 網址
-const DISCORD_WEBHOOK_URL = '貼上你剛剛複製的Discord_Webhook完整網址';
+ const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1561781081735430304/3gF6U5hwOOT7XcvqJX819AegaZKDIIAzMl9Pvq-hzB7cS6eAUt43JgyECkmdstO3Qh44';
 
-const DISCORD_WEBHOOK_URL = '貼上你剛剛複製的Discord_Webhook完整網址';
+    window.handleOrderSubmit = function(e) {
+      e.preventDefault();
+      
+      const randomNum = Math.floor(1000 + Math.random() * 9000);
+      const orderId = 'SC-' + randomNum;
+      const finalPayable = Math.max(0, currentBasePrice - appliedDiscount);
+      
+      const userEmail = document.getElementById('order-email').value.trim();
+      const bankTail = document.getElementById('order-bank-tail').value.trim() || '未填寫（稍後提供）';
+      const prodName = document.getElementById('modal-product-name').innerText;
+      const promoCode = document.getElementById('referral-input').value.trim().toUpperCase() || '無';
 
-window.handleOrderSubmit = function(e) {
-  e.preventDefault();
-  
-  const randomNum = Math.floor(1000 + Math.random() * 9000);
-  const orderId = 'SC-' + randomNum;
-  const finalPayable = Math.max(0, currentBasePrice - appliedDiscount);
-  
-  const userEmail = document.getElementById('order-email').value.trim();
-  const bankTail = document.getElementById('order-bank-tail').value.trim() || '未填寫（稍後提供）';
-  const prodName = document.getElementById('modal-product-name').innerText;
-  const promoCode = document.getElementById('referral-input').value.trim().toUpperCase() || '無';
+      document.getElementById('modal-step-form').style.display = 'none';
+      document.getElementById('generated-order-id').innerText = orderId;
+      document.getElementById('final-payable-amount').innerText = 'NT$ ' + finalPayable;
+      document.getElementById('order-success').style.display = 'block';
 
-  // 1. 切換彈窗顯示匯款資訊與單號
-  document.getElementById('modal-step-form').style.display = 'none';
-  document.getElementById('generated-order-id').innerText = orderId;
-  document.getElementById('final-payable-amount').innerText = 'NT$ ' + finalPayable;
-  document.getElementById('order-success').style.display = 'block';
+      if (DISCORD_WEBHOOK_URL) {
+        const discordPayload = {
+          username: "SC Order",
+          embeds: [
+            {
+              title: "🚨 收到新訂單預約！",
+              color: 65535,
+              fields: [
+                { name: "📋 訂單編號", value: `\`${orderId}\``, inline: true },
+                { name: "💰 應付金額", value: `**NT$ ${finalPayable}**`, inline: true },
+                { name: "📦 訂購商品", value: prodName, inline: false },
+                { name: "📧 買家 Gmail", value: `\`${userEmail}\``, inline: false },
+                { name: "🏦 轉帳末五碼", value: `\`${bankTail}\``, inline: true },
+                { name: "🏷️ 套用代碼", value: `\`${promoCode}\``, inline: true }
+              ],
+              footer: { text: "SC Studio 自動派單監控 • 請核對第一銀行網銀後於工單出貨" },
+              timestamp: new Date().toISOString()
+            }
+          ]
+        };
 
-  // 2. 自動將訂單推播至 Discord
-  if (DISCORD_WEBHOOK_URL && !DISCORD_WEBHOOK_URL.includes('貼上你剛剛複製')) {
-    const discordPayload = {
-      username: "SC Order",
-      embeds: [
-        {
-          title: "🚨 收到新訂單預約！",
-          color: 65535,
-          fields: [
-            { name: "📋 訂單編號", value: `\`${orderId}\``, inline: true },
-            { name: "💰 應付金額", value: `**NT$ ${finalPayable}**`, inline: true },
-            { name: "📦 訂購商品", value: prodName, inline: false },
-            { name: "📧 買家 Gmail", value: `\`${userEmail}\``, inline: false },
-            { name: "🏦 轉帳末五碼", value: `\`${bankTail}\``, inline: true },
-            { name: "🏷️ 套用代碼", value: `\`${promoCode}\``, inline: true }
-          ],
-          footer: { text: "SC Studio 自動派單監控 • 請核對第一銀行網銀後於工單出貨" },
-          timestamp: new Date().toISOString()
-        }
-      ]
+        fetch(DISCORD_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(discordPayload)
+        }).catch(err => console.error("Webhook 發送失敗:", err));
+      }
     };
 
     fetch(DISCORD_WEBHOOK_URL, {
