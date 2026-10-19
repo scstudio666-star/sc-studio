@@ -554,7 +554,6 @@
       gap: 8px;
     }
 
-    /* Discord 醒目專用按鈕 */
     .btn-discord-action {
       width: 100%;
       padding: 0.85rem;
@@ -598,7 +597,7 @@
         <path d="M 60 25 C 60 16 35 15 35 34 C 35 48 64 48 64 64 C 64 82 35 80 35 72" 
               stroke="url(#scCyanG)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" filter="url(#glowF)"/>
         <path d="M 72 38 C 65 22 46 20 34 32 C 20 46 20 62 34 76 C 46 88 65 86 72 70" 
-          stroke="#ffffff" stroke-width="7.5" stroke-linecap="round"/>
+              stroke="#ffffff" stroke-width="7.5" stroke-linecap="round"/>
         <path d="M 76 22 Q 76 26 80 26 Q 76 26 76 30 Q 76 26 72 26 Q 76 26 76 22 Z" fill="#00f0ff" filter="url(#glowF)"/>
       </svg>
       <div class="brand-title-wrap">
@@ -751,7 +750,7 @@
             <input type="email" class="form-input" required placeholder="example@gmail.com" id="order-email">
           </div>
 
-          <!-- 匯款後五碼（選填，方便對帳） -->
+          <!-- 匯款後五碼 -->
           <div class="form-group">
             <label>轉帳銀行帳號末 5 碼（選填，便於秒速核對）</label>
             <input type="text" class="form-input" placeholder="例如：56789（若尚未轉帳可先留空）" id="order-bank-tail" maxlength="5">
@@ -762,7 +761,7 @@
             <label>優惠代碼 / 推薦碼（選填）</label>
             <div style="display: flex; gap: 8px;">
               <input type="text" id="referral-input" class="form-input" placeholder="輸入 ILOVESC 現折 $30" style="text-transform: uppercase;">
-              <button type="button" class="btn-contact" style="white-space: nowrap; padding: 0 1.2rem; font-weight: 700;" onclick="applyPromoCode()">套用</button>
+              <button type="button" class="btn-buy btn-active" style="white-space: nowrap; padding: 0 1.2rem; width: auto; font-size: 0.85rem;" onclick="applyPromoCode()">套用</button>
             </div>
             <div id="promo-msg" style="font-size: 0.78rem; margin-top: 6px; display: none;"></div>
           </div>
@@ -823,20 +822,21 @@
           3. 若無使用 Discord，亦可寄信至：<code style="color: var(--accent);">scstudio666@gmail.com</code>。
         </div>
 
-        <button class="btn-contact" style="width: 100%; padding: 0.8rem;" onclick="closeOrderModal()">我已記下資訊並關閉</button>
+        <button class="btn-buy btn-active" style="width: 100%; padding: 0.8rem;" onclick="closeOrderModal()">我已記下資訊並關閉</button>
       </div>
 
     </div>
   </div>
 
   <script>
-    // 優惠折扣碼矩陣（代碼 : 折抵金額 NT$）
     const PROMO_CODES = {
       'ILOVESC': 30
     };
 
     let currentBasePrice = 0;
     let appliedDiscount = 0;
+
+    const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1561781081735430304/3gF6U5hwOOT7XcvqJX819AegaZKDIIAzMl9Pvq-hzB7cS6eAUt43JgyECkmdstO3Qh44';
 
     window.openOrderModal = function(name, price) {
       currentBasePrice = price;
@@ -921,8 +921,6 @@
       }
     };
 
- const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1561781081735430304/3gF6U5hwOOT7XcvqJX819AegaZKDIIAzMl9Pvq-hzB7cS6eAUt43JgyECkmdstO3Qh44';
-
     window.handleOrderSubmit = function(e) {
       e.preventDefault();
       
@@ -969,22 +967,6 @@
       }
     };
 
-    fetch(DISCORD_WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(discordPayload)
-    }).catch(err => console.error("Webhook 發送失敗:", err));
-  }
-};
-
-    fetch(DISCORD_WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(discordPayload)
-    }).catch(err => console.error("Webhook 發送失敗:", err));
-  }
-};
-    // 訂單進度查詢（正規表達式嚴格防呆）
     window.checkOrderStatus = function() {
       const input = document.getElementById('track-id-input').value.trim().toUpperCase();
       const res = document.getElementById('status-result');
