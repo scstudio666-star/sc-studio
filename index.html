@@ -352,7 +352,7 @@
     }
 
     .disclaimer-box {
-      padding: 1rem 1.25rem;
+      padding: 1.15rem 1.25rem;
       border-radius: 8px;
       background: var(--warning-bg);
       border-left: 4px solid var(--warning-text);
@@ -402,7 +402,7 @@
       display: flex;
       align-items: flex-start;
       gap: 10px;
-      margin: 1.25rem 0;
+      margin: 1.25rem 0 0.85rem;
       padding: 0.85rem;
       background: rgba(0, 0, 0, 0.45);
       border: 1px solid var(--warning-border);
@@ -422,6 +422,29 @@
       font-size: 0.78rem;
       color: #cbd5e1;
       line-height: 1.45;
+    }
+
+    .type-verify-box {
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 0.85rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .type-verify-box label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-sub);
+      margin-bottom: 0.45rem;
+    }
+
+    .type-verify-box code {
+      color: var(--accent);
+      background: rgba(0, 240, 255, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 700;
     }
 
     footer {
@@ -633,7 +656,7 @@
           <li>18 個月超長效期充值</li>
           <li>內含 5TB Google 雲端儲存空間</li>
           <li>下單後 24 小時內人工審核發送</li>
-          <li>7 天異常問題售後換新保固</li>
+          <li>官方政策調整享全額退款保障</li>
         </ul>
 
         <div class="price-wrap">
@@ -675,7 +698,7 @@
           <li>獨立商業團隊車位，穩定度最高</li>
           <li>全面支援 Magic Studio AI 魔術去背與擴展</li>
           <li>個人原有設計獨立隔離，完全保有私密性</li>
-          <li>店鋪提供 180 天異常換新保固背書</li>
+          <li>官方政策調整享全額退款保障</li>
         </ul>
 
         <div class="price-wrap">
@@ -690,10 +713,11 @@
 
     <!-- 須知條款與免責聲明區塊 -->
     <div class="disclaimer-section" id="disclaimer">
-      <h2 class="section-title">售後須知與免責聲明</h2>
+      <h2 class="section-title">售後須知與全額退款保障</h2>
       <div class="disclaimer-box">
-        ⚠️ <strong>重要售後規範與警語</strong>：<br>
-        本服務僅提供訂閱權限開通。如遇官方不可抗力政策調整導致失效，保固期內僅提供「免費補發新組」，無法協助找回或復原原帳號內之任何檔案與資料。請勿存放唯一且重要之資料，下單即代表完全同意本條款。
+        🛡️ <strong>開通規範與售後全額退款保障</strong>：<br>
+        1. <strong>強制使用全新備用帳號</strong>：為確保個人資料安全與避免原廠風控影響日常信箱、相簿及雲端檔案，<strong>本服務僅限提供「全新獨立備用 Google 帳號」進行開通</strong>。嚴禁使用個人日常主力本帳，若買方未遵守規範使用主力本帳致原廠風控受損，須自行承擔責任。<br>
+        2. <strong>售後全額退款保證</strong>：服務期間如遇原廠政策調整、機制變更致使服務中斷且無法為您補發排除，<strong>本賣場承諾無條件全額退款</strong>，絕不推諉，完整保障買方權益。
       </div>
     </div>
 
@@ -746,8 +770,8 @@
         <form id="orderForm" onsubmit="handleOrderSubmit(event)">
           <!-- 接收信箱 -->
           <div class="form-group">
-            <label>接收充值／序號的 Gmail 信箱 <span style="color: var(--badge-hot);">*</span></label>
-            <input type="email" class="form-input" required placeholder="example@gmail.com" id="order-email">
+            <label>接收充值／開通的全新備用 Gmail <span style="color: var(--badge-hot);">* (嚴禁主力本帳)</span></label>
+            <input type="email" class="form-input" required placeholder="請填寫全新備用 Google 帳號" id="order-email">
           </div>
 
           <!-- 匯款後五碼 -->
@@ -766,16 +790,22 @@
             <div id="promo-msg" style="font-size: 0.78rem; margin-top: 6px; display: none;"></div>
           </div>
 
-          <!-- 須知免責同意勾選 -->
+          <!-- 第 1 道防線：須知免責與全額退款同意勾選 -->
           <label class="checkbox-container">
             <input type="checkbox" id="terms-agree" required onchange="validateFormReady()">
             <span class="checkbox-label">
-              我已同意：本服務僅提供訂閱權限開通。如遇官方不可抗力政策調整導致失效，保固期內僅提供「免費補發新組」，無法協助找回或復原原帳號內之任何檔案與資料。
+              我已確認所填寫為<strong>全新獨立備用 Google 帳號</strong>（絕非個人主力本帳）；並了解若遇原廠政策調整致無法使用且無法補發時，享<strong>全額退款保障</strong>。若擅自使用主力本帳致受損買方願自負責任。
             </span>
           </label>
 
+          <!-- 第 2 道防線：手動輸入指定句子防呆驗證 -->
+          <div class="type-verify-box">
+            <label>請輸入 <code>確認使用全新備用帳號</code> 以解鎖按鈕：</label>
+            <input type="text" id="type-verify-input" class="form-input" placeholder="請完整輸入：確認使用全新備用帳號" autocomplete="off" oninput="validateFormReady()">
+          </div>
+
           <!-- 提交按鈕 -->
-          <button type="submit" id="btn-submit-order" class="btn-buy btn-disabled" disabled>請先勾選同意上述條款</button>
+          <button type="submit" id="btn-submit-order" class="btn-buy btn-disabled" disabled>請完成勾選並輸入指定文字驗證</button>
         </form>
       </div>
 
@@ -847,6 +877,7 @@
       const promoMsg = document.getElementById('promo-msg');
       const tailInput = document.getElementById('order-bank-tail');
       const agreeCheckbox = document.getElementById('terms-agree');
+      const typeVerify = document.getElementById('type-verify-input');
       const modal = document.getElementById('orderModal');
 
       if (modalName) modalName.innerText = name;
@@ -854,6 +885,7 @@
       if (promoMsg) promoMsg.style.display = 'none';
       if (tailInput) tailInput.value = '';
       if (agreeCheckbox) agreeCheckbox.checked = false;
+      if (typeVerify) typeVerify.value = '';
 
       updatePriceDisplay();
       validateFormReady();
@@ -908,12 +940,18 @@
 
     window.validateFormReady = function() {
       const isAgreed = document.getElementById('terms-agree').checked;
+      const verifyText = document.getElementById('type-verify-input').value.trim();
       const btn = document.getElementById('btn-submit-order');
+      const targetPhrase = "確認使用全新備用帳號";
 
       if (!isAgreed) {
         btn.disabled = true;
         btn.className = 'btn-buy btn-disabled';
         btn.innerText = '請先勾選同意上述條款';
+      } else if (verifyText !== targetPhrase) {
+        btn.disabled = true;
+        btn.className = 'btn-buy btn-disabled';
+        btn.innerText = '請完整輸入「確認使用全新備用帳號」';
       } else {
         btn.disabled = false;
         btn.className = 'btn-buy btn-active';
@@ -949,9 +987,10 @@
                 { name: "📋 訂單編號", value: `\`${orderId}\``, inline: true },
                 { name: "💰 應付金額", value: `**NT$ ${finalPayable}**`, inline: true },
                 { name: "📦 訂購商品", value: prodName, inline: false },
-                { name: "📧 買家 Gmail", value: `\`${userEmail}\``, inline: false },
+                { name: "📧 買家備用 Gmail", value: `\`${userEmail}\``, inline: false },
                 { name: "🏦 轉帳末五碼", value: `\`${bankTail}\``, inline: true },
-                { name: "🏷️ 套用代碼", value: `\`${promoCode}\``, inline: true }
+                { name: "🏷️ 套用代碼", value: `\`${promoCode}\``, inline: true },
+                { name: "🛡️ 安全條款", value: "✅ 已完成手動打字確認使用全新備用帳號", inline: false }
               ],
               footer: { text: "SC Studio 自動派單監控 • 請核對第一銀行網銀後於工單出貨" },
               timestamp: new Date().toISOString()
